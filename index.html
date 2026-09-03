@@ -1,3 +1,2248 @@
-<html>
-  <h1>City Compass</h1>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>City Compass • Smart Navigation & Discovery | App Oficial Google Play</title>
+
+  <!-- Metatags para SEO e Google Play Console -->
+  <meta name="description" content="City Compass: Aplicativo inteligente de descoberta e navegação que mostra onde os lugares estão ao seu redor utilizando GPS, bússola dinâmica, radar 360° e câmera com realidade aumentada.">
+  <meta name="keywords" content="City Compass, Navegação, Bússola, Radar, Realidade Aumentada, GPS, Descoberta de Lugares, HNS Soluções, Henrique Silveira, Google Play">
+  <meta name="author" content="Henrique Silveira - HNS Soluções">
+  <meta name="theme-color" content="#090B1A">
+  <meta name="application-name" content="City Compass">
+
+  <!-- Open Graph / Redes Sociais -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="City Compass • Smart Navigation & Discovery">
+  <meta property="og:description" content="Descubra para onde ir e onde qualquer destino está ao seu redor com Bússola, Radar, Câmera AR e Mapas.">
+  <meta property="og:image" content="assets/images/logo.png">
+
+  <link rel="icon" type="image/png" href="assets/icons/icon.png">
+
+  <!-- Google Fonts: Outfit & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #090B1A;
+      --bg-surface: #121A35;
+      --bg-surface-elevated: #182348;
+      --bg-surface-card: rgba(24, 35, 72, 0.7);
+      --primary: #7C4DFF;
+      --primary-glow: rgba(124, 77, 255, 0.35);
+      --secondary: #4FC3F7;
+      --secondary-glow: rgba(79, 195, 247, 0.3);
+      --accent-gold: #FFB300;
+      --accent-green: #00E676;
+      --accent-red: #FF5252;
+      --text-main: #FFFFFF;
+      --text-muted: #B0BEC5;
+      --text-dim: #78909C;
+      --border-subtle: rgba(255, 255, 255, 0.09);
+      --border-highlight: rgba(124, 77, 255, 0.35);
+      --glass-bg: rgba(18, 26, 53, 0.75);
+      --glass-blur: blur(16px);
+      --radius-sm: 10px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-xl: 32px;
+      --container-max: 1200px;
+      --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      color-scheme: dark;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      line-height: 1.65;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 15% 10%, rgba(124, 77, 255, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 85% 30%, rgba(79, 195, 247, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 50% 80%, rgba(124, 77, 255, 0.08) 0%, transparent 50%);
+      background-attachment: fixed;
+    }
+
+    /* Container global */
+    .container {
+      width: 100%;
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Tipografia */
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.25;
+    }
+
+    p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #FFFFFF 0%, #B0BEC5 40%, #7C4DFF 80%, #4FC3F7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+    }
+
+    .gradient-accent {
+      background: linear-gradient(135deg, #7C4DFF 0%, #4FC3F7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+    }
+
+    /* Header / Navbar */
+    header.site-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(9, 11, 26, 0.85);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border-bottom: 1px solid var(--border-subtle);
+      transition: var(--transition);
+    }
+
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 76px;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-main);
+    }
+
+    .brand-logo img {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px var(--primary-glow);
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-name {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .brand-tag {
+      font-size: 0.72rem;
+      color: var(--secondary);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    nav.site-nav {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--text-main);
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--primary);
+      transition: var(--transition);
+      border-radius: 2px;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .btn-header-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, var(--primary) 0%, #5E35B1 100%);
+      color: #FFF;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      box-shadow: 0 4px 14px var(--primary-glow);
+      transition: var(--transition);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .btn-header-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(124, 77, 255, 0.55);
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text-main);
+      font-size: 1.6rem;
+      cursor: pointer;
+    }
+
+    /* Hero Section */
+    section.hero-section {
+      padding: 90px 0 60px;
+      position: relative;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      align-items: center;
+      gap: 50px;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(124, 77, 255, 0.14);
+      border: 1px solid var(--border-highlight);
+      padding: 6px 16px;
+      border-radius: 40px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--secondary);
+      margin-bottom: 24px;
+    }
+
+    .badge-pill span.pulse {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-green);
+      box-shadow: 0 0 10px var(--accent-green);
+      animation: pulseAnim 2s infinite;
+    }
+
+    @keyframes pulseAnim {
+      0% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.2); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    .hero-title {
+      font-size: 3.4rem;
+      letter-spacing: -1.5px;
+      margin-bottom: 22px;
+      line-height: 1.12;
+    }
+
+    .hero-subtitle {
+      font-size: 1.2rem;
+      margin-bottom: 34px;
+      color: var(--text-muted);
+      max-width: 580px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 36px;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, var(--primary) 0%, #4527A0 100%);
+      color: #FFF;
+      text-decoration: none;
+      padding: 15px 30px;
+      border-radius: 16px;
+      font-weight: 700;
+      font-size: 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 24px var(--primary-glow);
+      transition: var(--transition);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(124, 77, 255, 0.6);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-main);
+      text-decoration: none;
+      padding: 15px 28px;
+      border-radius: 16px;
+      font-weight: 600;
+      font-size: 1rem;
+      border: 1px solid var(--border-subtle);
+      backdrop-filter: blur(8px);
+      transition: var(--transition);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-2px);
+    }
+
+    .hero-meta-tags {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .meta-tag-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .meta-tag-item svg {
+      color: var(--secondary);
+      flex-shrink: 0;
+    }
+
+    /* Mockup Celular Hero */
+    .hero-mockup-wrapper {
+      position: relative;
+      display: flex;
+      justify-content: center;
+    }
+
+    .phone-mockup {
+      width: 320px;
+      height: 640px;
+      background: #0B0E1E;
+      border-radius: 46px;
+      border: 8px solid #20263F;
+      box-shadow: 
+        0 25px 60px rgba(0, 0, 0, 0.8),
+        0 0 40px var(--primary-glow);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .phone-notch {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 110px;
+      height: 22px;
+      background: #20263F;
+      border-radius: 20px;
+      z-index: 10;
+    }
+
+    .phone-screen {
+      flex: 1;
+      padding: 44px 18px 20px;
+      display: flex;
+      flex-direction: column;
+      background: linear-gradient(180deg, #090B1A 0%, #121A35 50%, #1D2550 100%);
+      overflow: hidden;
+      font-size: 0.85rem;
+    }
+
+    .mockup-appbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .mockup-appbar h4 {
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+
+    .mockup-location-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 10px 14px;
+      margin-bottom: 12px;
+    }
+
+    .mockup-location-card .loc-title {
+      color: #FFF;
+      font-weight: 600;
+      font-size: 0.82rem;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .mockup-location-card .loc-coords {
+      color: var(--text-dim);
+      font-size: 0.72rem;
+      font-family: monospace;
+    }
+
+    .mockup-target-card {
+      background: rgba(124, 77, 255, 0.12);
+      border: 1px solid rgba(124, 77, 255, 0.3);
+      border-radius: 16px;
+      padding: 14px;
+      margin-bottom: 14px;
+    }
+
+    .mockup-target-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+    }
+
+    .mockup-target-name {
+      font-weight: 700;
+      color: #FFF;
+      font-size: 0.95rem;
+    }
+
+    .mockup-target-dist {
+      color: var(--secondary);
+      font-weight: 700;
+      font-size: 0.88rem;
+    }
+
+    .mockup-compass-box {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      padding: 10px;
+    }
+
+    .mockup-compass-dial {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      border: 2px dashed rgba(255, 255, 255, 0.2);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 0 20px rgba(124, 77, 255, 0.15);
+      animation: rotateDial 24s linear infinite;
+    }
+
+    @keyframes rotateDial {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .mockup-needle {
+      position: absolute;
+      width: 6px;
+      height: 90px;
+      background: linear-gradient(180deg, #FF5252 50%, #ECEFF1 50%);
+      border-radius: 4px;
+      transform-origin: center center;
+      animation: needleBob 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes needleBob {
+      0% { transform: rotate(-12deg); }
+      100% { transform: rotate(18deg); }
+    }
+
+    .mockup-needle-center {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #FFF;
+      border: 3px solid var(--primary);
+      z-index: 2;
+    }
+
+    .mockup-status-text {
+      margin-top: 10px;
+      font-weight: 700;
+      color: var(--accent-green);
+      font-size: 0.8rem;
+      text-align: center;
+    }
+
+    .mockup-toolbar {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .mockup-tool-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFF;
+      font-size: 0.8rem;
+    }
+
+    /* Seções Comuns */
+    section {
+      padding: 90px 0;
+      position: relative;
+    }
+
+    .section-header {
+      text-align: center;
+      max-width: 760px;
+      margin: 0 auto 60px;
+    }
+
+    .section-tag {
+      display: inline-block;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--secondary);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      letter-spacing: -0.8px;
+      margin-bottom: 16px;
+    }
+
+    .section-subtitle {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+    }
+
+    /* Cards e Grid */
+    .card-glass {
+      background: var(--bg-surface-card);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-glass:hover {
+      transform: translateY(-6px);
+      border-color: var(--border-highlight);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4), 0 0 24px var(--primary-glow);
+    }
+
+    /* Seção 1: Do que se trata o app */
+    .about-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+
+    .about-card-icon {
+      width: 58px;
+      height: 58px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(124, 77, 255, 0.25) 0%, rgba(79, 195, 247, 0.15) 100%);
+      border: 1px solid var(--border-highlight);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 22px;
+      color: var(--secondary);
+      font-size: 1.6rem;
+    }
+
+    .about-card h3 {
+      font-size: 1.35rem;
+      margin-bottom: 12px;
+    }
+
+    .about-card p {
+      font-size: 0.98rem;
+      color: var(--text-muted);
+    }
+
+    .quote-box {
+      margin-top: 50px;
+      background: linear-gradient(135deg, rgba(40, 75, 99, 0.35) 0%, rgba(21, 50, 67, 0.45) 100%);
+      border: 1px solid rgba(79, 195, 247, 0.25);
+      border-radius: var(--radius-xl);
+      padding: 40px;
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .quote-icon {
+      font-size: 3.5rem;
+      color: var(--secondary);
+      flex-shrink: 0;
+    }
+
+    .quote-text h4 {
+      font-size: 1.45rem;
+      margin-bottom: 8px;
+      color: #FFF;
+    }
+
+    .quote-text p {
+      font-size: 1.05rem;
+      color: #D1D5DB;
+    }
+
+    /* Seção 2: Como ele funciona */
+    .steps-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      position: relative;
+    }
+
+    .step-card {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 28px;
+      align-items: center;
+      background: var(--bg-surface-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 30px;
+      transition: var(--transition);
+    }
+
+    .step-card:hover {
+      border-color: var(--border-highlight);
+      background: rgba(24, 35, 72, 0.85);
+      transform: translateX(6px);
+    }
+
+    .step-number {
+      width: 70px;
+      height: 70px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #FFF;
+      box-shadow: 0 8px 20px var(--primary-glow);
+    }
+
+    .step-content h3 {
+      font-size: 1.4rem;
+      margin-bottom: 8px;
+    }
+
+    .step-content p {
+      font-size: 1rem;
+    }
+
+    .step-features {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .feature-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-subtle);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      color: var(--secondary);
+      font-weight: 500;
+    }
+
+    /* Seção 3: O que cada ícone faz (Catálogo) */
+    .icons-filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 36px;
+    }
+
+    .filter-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .filter-tab-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      padding: 8px 18px;
+      border-radius: 30px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .filter-tab-btn:hover,
+    .filter-tab-btn.active {
+      background: var(--primary);
+      color: #FFF;
+      border-color: var(--primary);
+      box-shadow: 0 4px 14px var(--primary-glow);
+    }
+
+    .icon-search-input {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-subtle);
+      border-radius: 30px;
+      padding: 10px 20px;
+      color: #FFF;
+      font-size: 0.9rem;
+      outline: none;
+      min-width: 260px;
+      transition: var(--transition);
+    }
+
+    .icon-search-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 16px var(--primary-glow);
+      background: rgba(255, 255, 255, 0.09);
+    }
+
+    .icons-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 22px;
+    }
+
+    .icon-card {
+      background: var(--bg-surface-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .icon-card:hover {
+      border-color: var(--border-highlight);
+      transform: translateY(-4px);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+    }
+
+    .icon-card-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+
+    .icon-symbol-box {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      flex-shrink: 0;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+    }
+
+    .icon-title-group h4 {
+      font-size: 1.15rem;
+      margin-bottom: 2px;
+    }
+
+    .icon-category-tag {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      font-weight: 700;
+      color: var(--secondary);
+    }
+
+    .icon-code-name {
+      display: inline-block;
+      font-family: monospace;
+      font-size: 0.76rem;
+      background: rgba(255, 255, 255, 0.08);
+      color: #ECEFF1;
+      padding: 2px 8px;
+      border-radius: 6px;
+      margin-bottom: 12px;
+      align-self: flex-start;
+    }
+
+    .icon-card p {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      flex-grow: 1;
+    }
+
+    .icon-screen-badge {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Cores de categorias de ícones */
+    .sym-purple { background: rgba(124, 77, 255, 0.2); color: #B388FF; border: 1px solid rgba(124, 77, 255, 0.35); }
+    .sym-cyan   { background: rgba(79, 195, 247, 0.2); color: #4FC3F7; border: 1px solid rgba(79, 195, 247, 0.35); }
+    .sym-amber  { background: rgba(255, 179, 0, 0.2); color: #FFD54F; border: 1px solid rgba(255, 179, 0, 0.35); }
+    .sym-green  { background: rgba(0, 230, 118, 0.2); color: #69F0AE; border: 1px solid rgba(0, 230, 118, 0.35); }
+    .sym-red    { background: rgba(255, 82, 82, 0.2); color: #FF8A80; border: 1px solid rgba(255, 82, 82, 0.35); }
+    .sym-blue   { background: rgba(41, 121, 255, 0.2); color: #82B1FF; border: 1px solid rgba(41, 121, 255, 0.35); }
+
+    /* Seção 4: Simulador Interativo Web */
+    .simulator-container {
+      background: linear-gradient(135deg, rgba(18, 26, 53, 0.85) 0%, rgba(9, 11, 26, 0.95) 100%);
+      border: 1px solid var(--border-highlight);
+      border-radius: var(--radius-xl);
+      padding: 44px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px var(--primary-glow);
+    }
+
+    .sim-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .sim-visual-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: var(--radius-lg);
+      padding: 34px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .sim-compass-bezel {
+      width: 250px;
+      height: 250px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #10162B 0%, #080B17 100%);
+      border: 6px solid #283359;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), inset 0 0 30px rgba(124, 77, 255, 0.15);
+    }
+
+    .sim-cardinal {
+      position: absolute;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: var(--text-dim);
+    }
+
+    .sim-n { top: 10px; color: #FF5252; }
+    .sim-s { bottom: 10px; }
+    .sim-e { right: 14px; }
+    .sim-w { left: 14px; }
+
+    .sim-needle {
+      position: absolute;
+      width: 10px;
+      height: 180px;
+      border-radius: 5px;
+      background: linear-gradient(180deg, #FF5252 50%, #ECEFF1 50%);
+      box-shadow: 0 0 12px rgba(255, 82, 82, 0.5);
+      transition: transform 0.25s cubic-bezier(0.1, 0.9, 0.2, 1);
+      transform-origin: center center;
+    }
+
+    .sim-center-hub {
+      position: absolute;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      border: 4px solid var(--primary);
+      z-index: 5;
+      box-shadow: 0 0 10px #FFF;
+    }
+
+    .sim-status-banner {
+      margin-top: 24px;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      text-align: center;
+      transition: var(--transition);
+      width: 100%;
+      border: 1px solid transparent;
+    }
+
+    .status-aligned {
+      background: rgba(0, 230, 118, 0.15);
+      color: var(--accent-green);
+      border-color: rgba(0, 230, 118, 0.35);
+      box-shadow: 0 0 16px rgba(0, 230, 118, 0.2);
+    }
+
+    .status-turn {
+      background: rgba(255, 179, 0, 0.15);
+      color: var(--accent-gold);
+      border-color: rgba(255, 179, 0, 0.35);
+    }
+
+    .sim-controls-col h3 {
+      font-size: 1.6rem;
+      margin-bottom: 12px;
+    }
+
+    .sim-controls-col p {
+      margin-bottom: 24px;
+      font-size: 0.98rem;
+    }
+
+    .control-group {
+      margin-bottom: 22px;
+    }
+
+    .control-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.92rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .control-label span.val {
+      color: var(--secondary);
+      font-family: monospace;
+      font-size: 1rem;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      height: 8px;
+      border-radius: 5px;
+      background: #252F52;
+      outline: none;
+      -webkit-appearance: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--primary);
+      cursor: pointer;
+      border: 2px solid #FFF;
+      box-shadow: 0 0 10px var(--primary-glow);
+      transition: var(--transition);
+    }
+
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+
+    .quick-angles {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .btn-chip {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .btn-chip:hover {
+      background: var(--primary);
+      color: #FFF;
+    }
+
+    /* Seção 5: Política de Privacidade e Requisitos Google Play Console */
+    .privacy-box {
+      background: var(--bg-surface-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      padding: 44px;
+      margin-bottom: 30px;
+    }
+
+    .privacy-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .privacy-header-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background: rgba(0, 230, 118, 0.15);
+      color: var(--accent-green);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+    }
+
+    .privacy-content h3 {
+      font-size: 1.3rem;
+      margin: 24px 0 10px;
+      color: #FFF;
+    }
+
+    .privacy-content p {
+      font-size: 0.98rem;
+      margin-bottom: 14px;
+      color: var(--text-muted);
+    }
+
+    .permission-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+    }
+
+    .permission-table th, 
+    .permission-table td {
+      padding: 14px 18px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-subtle);
+      font-size: 0.92rem;
+    }
+
+    .permission-table th {
+      background: rgba(255, 255, 255, 0.05);
+      color: #FFF;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .permission-table td {
+      background: rgba(0, 0, 0, 0.15);
+      color: var(--text-muted);
+    }
+
+    .badge-perm {
+      background: rgba(124, 77, 255, 0.15);
+      color: var(--secondary);
+      border: 1px solid var(--border-highlight);
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-family: monospace;
+      font-size: 0.8rem;
+    }
+
+    /* Seção 6: FAQ & Especificações Técnicas */
+    .faq-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .faq-card {
+      background: var(--bg-surface-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      transition: var(--transition);
+    }
+
+    .faq-card:hover {
+      border-color: var(--border-highlight);
+    }
+
+    .faq-card h4 {
+      font-size: 1.15rem;
+      margin-bottom: 10px;
+      color: #FFF;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .faq-card p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    /* Informações do App & Suporte */
+    .app-meta-box {
+      background: linear-gradient(135deg, rgba(20, 27, 56, 0.9) 0%, rgba(10, 13, 29, 0.95) 100%);
+      border: 1px solid var(--border-highlight);
+      border-radius: var(--radius-xl);
+      padding: 40px;
+      margin-top: 50px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      text-align: center;
+    }
+
+    .app-meta-item h5 {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--secondary);
+      margin-bottom: 6px;
+    }
+
+    .app-meta-item p {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #FFF;
+    }
+
+    /* Rodapé */
+    footer.site-footer {
+      background: #050711;
+      border-top: 1px solid var(--border-subtle);
+      padding: 60px 0 30px;
+      color: var(--text-dim);
+      font-size: 0.9rem;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    .footer-brand p {
+      font-size: 0.92rem;
+      margin-top: 12px;
+      max-width: 320px;
+    }
+
+    .footer-col h4 {
+      color: #FFF;
+      font-size: 1.05rem;
+      margin-bottom: 18px;
+    }
+
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-links a {
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .footer-links a:hover {
+      color: var(--secondary);
+      transform: translateX(4px);
+    }
+
+    .footer-bottom {
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.85rem;
+    }
+
+    /* Responsividade */
+    @media (max-width: 992px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      .hero-subtitle {
+        margin: 0 auto 30px;
+      }
+      .hero-actions {
+        justify-content: center;
+      }
+      .hero-meta-tags {
+        justify-content: center;
+      }
+      .about-cards-grid {
+        grid-template-columns: 1fr;
+      }
+      .sim-grid {
+        grid-template-columns: 1fr;
+      }
+      .app-meta-box {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links, .btn-header-cta {
+        display: none;
+      }
+      .mobile-menu-btn {
+        display: block;
+      }
+      .hero-title {
+        font-size: 2.5rem;
+      }
+      .step-card {
+        grid-template-columns: 1fr;
+        text-align: left;
+      }
+      .step-number {
+        width: 50px;
+        height: 50px;
+        font-size: 1.3rem;
+      }
+      .faq-grid {
+        grid-template-columns: 1fr;
+      }
+      .simulator-container, .privacy-box {
+        padding: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navegação Principal -->
+  <header class="site-header">
+    <div class="container nav-container">
+      <a href="#" class="brand-logo" id="header-brand">
+        <img src="assets/images/logo.png" alt="City Compass Logo" onerror="this.src='assets/icons/icon.png'">
+        <div class="brand-text">
+          <span class="brand-name">City Compass</span>
+          <span class="brand-tag">Smart Navigation</span>
+        </div>
+      </a>
+
+      <nav class="site-nav">
+        <ul class="nav-links">
+          <li><a href="#sobre">Sobre o App</a></li>
+          <li><a href="#como-funciona">Como Funciona</a></li>
+          <li><a href="#icones">Guia de Ícones</a></li>
+          <li><a href="#simulador">Simulador</a></li>
+          <li><a href="#privacidade">Privacidade</a></li>
+          <li><a href="#faq">Suporte</a></li>
+        </ul>
+      </nav>
+
+      <a href="#privacidade" class="btn-header-cta" id="cta-play-badge">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.5,12.92 20.16,13.19L17.89,14.5L15.39,12L17.89,9.5L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z"/></svg>
+        Google Play Store
+      </a>
+
+      <button class="mobile-menu-btn" id="mobile-menu-trigger" aria-label="Abrir Menu">☰</button>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container hero-grid">
+      <div class="hero-info">
+        <div class="badge-pill">
+          <span class="pulse"></span>
+          <span>Versão Oficial 1.0 • Google Play Console</span>
+        </div>
+        <h1 class="hero-title">
+          Não apenas como chegar.<br>
+          Saiba <span class="gradient-accent">onde está</span> ao seu redor.
+        </h1>
+        <p class="hero-subtitle">
+          O <strong>City Compass</strong> transforma a exploração de lugares em uma experiência intuitiva. Enquanto aplicativos tradicionais traçam rotas abstratas, nós orientamos seus sentidos com <strong>Bússola Dinâmica, Radar 360°, Câmera com Realidade Aumentada</strong> e Mapas em tempo real.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#simulador" class="btn-primary" id="btn-testar-simulador">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+            Experimentar Bússola & Radar
+          </a>
+          <a href="#icones" class="btn-secondary" id="btn-ver-icones">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            O que cada ícone faz
+          </a>
+        </div>
+
+        <div class="hero-meta-tags">
+          <div class="meta-tag-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            GPS em Alta Precisão
+          </div>
+          <div class="meta-tag-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+            Privacidade: 100% no Aparelho
+          </div>
+          <div class="meta-tag-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M9 11.75c-.69 0-1.25.56-1.25 1.25s.56 1.25 1.25 1.25 1.25-.56 1.25-1.25-.56-1.25-1.25-1.25zm6 0c-.69 0-1.25.56-1.25 1.25s.56 1.25 1.25 1.25 1.25-.56 1.25-1.25-.56-1.25-1.25-1.25zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8 0-.29.02-.58.05-.86 2.36-1.05 4.23-2.98 5.21-5.37C11.07 8.33 14.05 10 17.42 10c.78 0 1.53-.09 2.25-.26.21.71.33 1.47.33 2.26 0 4.41-3.59 8-8 8z"/></svg>
+            OpenStreetMap Integrado
+          </div>
+        </div>
+      </div>
+
+      <!-- Celular Mockup Interativo -->
+      <div class="hero-mockup-wrapper">
+        <div class="phone-mockup">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="mockup-appbar">
+              <h4>City Compass</h4>
+              <span style="font-size: 0.75rem; color: var(--secondary); background: rgba(79,195,247,0.15); padding: 2px 8px; border-radius: 10px;">v1.0.0</span>
+            </div>
+
+            <div class="mockup-location-card">
+              <div class="loc-title">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#FF5252"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
+                Sua Posição Atual
+              </div>
+              <div class="loc-coords">Lat: -23.5505 • Long: -46.6333</div>
+            </div>
+
+            <div class="mockup-target-card">
+              <div class="mockup-target-header">
+                <div>
+                  <div class="mockup-target-name">Mirante Central</div>
+                  <div style="font-size: 0.72rem; color: var(--text-dim);">Destino Selecionado</div>
+                </div>
+                <div class="mockup-target-dist">1.4 km</div>
+              </div>
+              <div style="font-size: 0.75rem; color: var(--text-muted); display: flex; justify-content: space-between;">
+                <span>Rumo: <strong>045° (NE)</strong></span>
+                <span style="color: var(--accent-gold);">★ Salvo</span>
+              </div>
+            </div>
+
+            <div class="mockup-compass-box">
+              <div class="mockup-compass-dial">
+                <div class="mockup-needle"></div>
+                <div class="mockup-needle-center"></div>
+                <span style="position: absolute; top: 6px; font-weight: 800; font-size: 0.75rem; color: #FF5252;">N</span>
+                <span style="position: absolute; bottom: 6px; font-weight: 800; font-size: 0.75rem; color: var(--text-dim);">S</span>
+              </div>
+              <div class="mockup-status-text">🧭 Alinhado com o destino!</div>
+            </div>
+
+            <div class="mockup-toolbar">
+              <div class="mockup-tool-icon" title="Favorito" style="color: var(--accent-gold);">★</div>
+              <div class="mockup-tool-icon" title="Radar" style="color: var(--secondary);">📡</div>
+              <div class="mockup-tool-icon" title="Câmera AR" style="color: var(--primary);">📷</div>
+              <div class="mockup-tool-icon" title="Mapa">🗺️</div>
+              <div class="mockup-tool-icon" title="Ir" style="color: var(--accent-green);">↗️</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção: Do que se trata o app -->
+  <section id="sobre">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Sobre o Projeto</span>
+        <h2 class="section-title">Do que se trata o <span class="gradient-accent">City Compass</span>?</h2>
+        <p class="section-subtitle">
+          Um aplicativo concebido para mudar o paradigma de navegação. Enquanto o GPS comum exige olhar mapas complexos e interpretação de esquinas, o City Compass age como um sexto sentido de orientação espacial.
+        </p>
+      </div>
+
+      <div class="about-cards-grid">
+        <div class="card-glass about-card">
+          <div class="about-card-icon">🧭</div>
+          <h3>Orientação Sensorial Direta</h3>
+          <p>
+            Em vez de instruções do tipo "vire à esquerda em 100m", o City Compass responde: <strong>"O ponto está exatamente naquela direção, a 350 metros de você"</strong>. É a conexão direta entre seu corpo e o destino.
+          </p>
+        </div>
+
+        <div class="card-glass about-card">
+          <div class="about-card-icon">📡</div>
+          <h3>Radar & Câmera com AR</h3>
+          <p>
+            Modo Radar com varredura em 360° e Câmera com Realidade Aumentada. Aponte o smartphone para o horizonte e visualize o marcador do local flutuando sobre a imagem real com distância e indicação de giro.
+          </p>
+        </div>
+
+        <div class="card-glass about-card">
+          <div class="about-card-icon">🗺️</div>
+          <h3>Mapas Abertos & Privacidade</h3>
+          <p>
+            Desenvolvido com OpenStreetMap, o City Compass não rastreia seus passos em servidores remotos. Suas pesquisas e favoritos ficam salvos exclusivamente no armazenamento interno do seu aparelho.
+          </p>
+        </div>
+      </div>
+
+      <div class="quote-box">
+        <div class="quote-icon">“</div>
+        <div class="quote-text">
+          <h4>Uma nova experiência para viajantes, trilheiros e exploradores urbanos</h4>
+          <p>
+            O City Compass foi desenhado para quem aprecia explorar cidades a pé, encontrar seu hotel sem estresse, orientar-se ao sair de estações de metrô ou encontrar pontos turísticos com máxima velocidade e clareza.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção: Como ele funciona -->
+  <section id="como-funciona" style="background: rgba(18, 26, 53, 0.3);">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Fluxo Operacional</span>
+        <h2 class="section-title">Como o aplicativo <span class="gradient-accent">funciona</span>?</h2>
+        <p class="section-subtitle">
+          Da detecção dos sensores do seu smartphone até a visualização imersiva na câmera, veja o passo a passo da tecnologia do City Compass.
+        </p>
+      </div>
+
+      <div class="steps-timeline">
+        <!-- Passo 1 -->
+        <div class="step-card">
+          <div class="step-number">01</div>
+          <div class="step-content">
+            <h3>Fixação de Localização por GPS em Alta Precisão</h3>
+            <p>
+              Ao abrir o aplicativo, o serviço de localização obtém as coordenadas geodésicas exatas (latitude e longitude) do dispositivo. As informações são atualizadas continuamente para garantir precisão dinâmica de deslocamento.
+            </p>
+            <div class="step-features">
+              <span class="feature-tag">📍 Geolocalização Nativa</span>
+              <span class="feature-tag">⏱️ Atualização em Tempo Real</span>
+              <span class="feature-tag">🔒 Processamento Local</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Passo 2 -->
+        <div class="step-card">
+          <div class="step-number">02</div>
+          <div class="step-content">
+            <h3>Pesquisa de Qualquer Lugar ou Ponto de Interesse</h3>
+            <p>
+              Digite o nome de um restaurante, parque, monumento, cidade ou endereço. O sistema faz a busca geográfica instantânea, retornando as coordenadas do destino com suporte a histórico automático e favoritos.
+            </p>
+            <div class="step-features">
+              <span class="feature-tag">🔎 Busca Universal</span>
+              <span class="feature-tag">⭐ Favoritos com Apelido</span>
+              <span class="feature-tag">🕒 Histórico Deslizável</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Passo 3 -->
+        <div class="step-card">
+          <div class="step-number">03</div>
+          <div class="step-content">
+            <h3>Cálculo Matemático de Azimute (Bearing) & Distância</h3>
+            <p>
+              O motor de navegação calcula a distância exata em metros ou quilômetros e o ângulo de rumo (bearing em graus de 0° a 360°). Esse ângulo é cruzado em tempo real com o magnetômetro (sensor de bússola) do smartphone.
+            </p>
+            <div class="step-features">
+              <span class="feature-tag">📐 Fórmula Geodésica de Haversine</span>
+              <span class="feature-tag">🧭 Cálculo de Rumo Verdadeiro</span>
+              <span class="feature-tag">⚡ Sem Latência</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Passo 4 -->
+        <div class="step-card">
+          <div class="step-number">04</div>
+          <div class="step-content">
+            <h3>Visualização em 4 Modos Simultâneos de Exploração</h3>
+            <p>
+              O usuário pode alternar instantaneamente entre a <strong>Bússola Dinâmica</strong> ("Vire 42° à direita"), o <strong>Radar 360°</strong>, a <strong>Câmera com Realidade Aumentada (AR)</strong> ou o <strong>Mapa Interativo OpenStreetMap</strong>.
+            </p>
+            <div class="step-features">
+              <span class="feature-tag">🧭 Bússola Cardeal</span>
+              <span class="feature-tag">📡 Radar de Varredura</span>
+              <span class="feature-tag">📷 Visão AR na Câmera</span>
+              <span class="feature-tag">🗺️ Mapa OpenStreetMap</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Passo 5 -->
+        <div class="step-card">
+          <div class="step-number">05</div>
+          <div class="step-content">
+            <h3>Ações Rápidas: Rota Externa & Compartilhamento</h3>
+            <p>
+              Com um único toque você pode acionar a navegação veicular curva a curva no Google Maps ou compartilhar as coordenadas e distância com amigos via WhatsApp ou redes sociais.
+            </p>
+            <div class="step-features">
+              <span class="feature-tag">↗️ Google Maps Direto</span>
+              <span class="feature-tag">📤 Compartilhamento Rápido</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção: O que cada ícone faz -->
+  <section id="icones">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Dicionário de Interface</span>
+        <h2 class="section-title">O que cada <span class="gradient-accent">ícone</span> faz?</h2>
+        <p class="section-subtitle">
+          Guia completo de todos os botões, símbolos e ações disponíveis no City Compass. Clique nos filtros ou busque para entender sua função exata.
+        </p>
+      </div>
+
+      <!-- Barra de Filtros e Busca de Ícones -->
+      <div class="icons-filter-bar">
+        <div class="filter-tabs">
+          <button class="filter-tab-btn active" data-filter="all">Todos os Ícones</button>
+          <button class="filter-tab-btn" data-filter="nav">Navegação & Direção</button>
+          <button class="filter-tab-btn" data-filter="tela">Telas do App</button>
+          <button class="filter-tab-btn" data-filter="acao">Ações & Favoritos</button>
+        </div>
+        <input type="text" id="icon-search" class="icon-search-input" placeholder="Buscar ícone (ex: bússola, estrela)...">
+      </div>
+
+      <!-- Grade de Ícones -->
+      <div class="icons-grid" id="icons-container">
+
+        <!-- 1. Lupa / Pesquisa -->
+        <div class="icon-card" data-category="nav">
+          <div class="icon-card-header">
+            <div class="icon-symbol-box sym-cyan">🔍</div>
+            <div class="icon-title-group">
+              <h4>Lupa / Pesquisa</h4>
+              <span class="icon-category-tag">Navegação</span>
+            </div>
+          </div>
+          <span class="icon-code-name">Icons.search</span>
+          <p>
+            Aciona a busca textual do destino. Converte o nome ou endereço digitado em latitude e longitude e inicia o cálculo de distância e rumo.
+          </p>
+          <div class="icon-screen-badge">📌 Tela Principal • Card de Pesquisa</div>
+        </div>
+
+        <!-- 2. Marcador / Pin -->
+        <div class="icon-card" data-category="nav">
+          <div class="icon-card-header">
+            <div class="icon-symbol-box sym-red">📍</div>
+            <div class="icon-title-group">
+              <h4>Marcador de Posição</h4>
+              <span class="icon-category-tag">Navegação</span>
+            </div>
+          </div>
+          <span class="icon-code-name">Icons.location_on / location_pin</span>
+          <p>
+            Representa a coordenada geográfica exata. Na tela inicial indica seu ponto atual; no mapa e na câmera AR, indica a posição exata do seu destino no espaço.
+          </p>
+          <div class="icon-screen-badge">📌 Home • Mapa • Câmera AR</div>
+        </div>
+
+        <!-- 3. Bússola -->
+        <div class="icon-card" data-category="nav">
+          <div class="icon-card-header">
+            <div class="icon-symbol-box sym-purple">🧭</div>
+            <div class="icon-title-group">
+              <h4>Bússola Digital</h4>
+              <span class="icon-category-tag">Navegação</span>
+            </div>
+          </div>
+          <span class="icon-code-name">Icons.explore / CompassCard</span>
+          <p>
+            Mede a orientação magnética com os sensores internos do celular. Indica pontos cardeais (N, S, L, O) e instrui se você deve virar para a esquerda, direita ou se está perfeitamente alinhado.
+          </p>
+          <div class="icon-screen-badge">📌 Tela Principal • Card da Bússola</div>
+        </div>
+
+        <!-- 4. Radar -->
+        <div class="icon-card" data-category="tela">
+          <div class="icon-card-header">
+            <div class="icon-symbol-box sym-cyan">📡</div>
+            <div class="icon-title-group">
+              <h4>Modo Radar</h4>
+              <span class="icon-category-tag">Telas do App</span>
+            </div>
+          </div>
+          <span class="icon-code-name">Icons.radar / RadarScreen</span>
+          <p>
+            Abre a tela imersiva de Radar. Exibe uma interface circular com seta rotativa que aponta em 360° para o destino, calculando em tempo real o desvio angular (heading vs destino).
+          </p>
+          <div class="icon-screen-badge">📌 Botão de Ação do Destino</div>
+        </div>
+
+        <!-- 5. Câmera AR -->
+        <div class="icon-card" data-category="tela">
+          <div class="icon-card-header">
+            <div class="icon-symbol-box sym-purple">📷</div>
+            <div class="icon-title-group">
+              <h4>Câmera com AR</h4>
+              <span class="icon-category-tag">Telas do App</span>
+            </div>
+          </div>
+          <span class="icon-code-name">Icons.camera_alt / CameraScreen</span>
+          <p>
+            Ativa a câmera traseira do smartphone e projeta o marcador e nome do destino sobrepostos ao mundo real com Realidade Aumentada. Ajuda a avistar marcos distantes.
+          </p>
+          <div class="icon-screen-badge">📌 Botão de Ação do Destino</div>
+        </div>
+
+        <!-- 6. Mapa -->
+        <div class="icon-card" data-category="tela">
+          <div class="icon-card-header">
+            <div class="icon-symbol-box sym-blue">🗺️</div>
+            <div class="icon-title-group">
+              <h4>Visualização em Mapa</h4>
+              <span class="icon-category-tag">Telas do App</span>
+            </div>
+          </div>
+          <span class="icon-code-name">Icons.map / MapScreen</span>
+          <p>
+            Abre a visualização cartográfica detalhada baseada em OpenStreetMap, centralizando exatamente nas coordenadas do local com marcador em destaque e zoom ajustável.
+          </p>
+          <div class="icon-screen-badge">📌 Botão de Ação do Destino</div>
+        </div>
+
+        <!-- 7. Estrela de Favoritos -->
+        <div class="icon-card" data-category="acao">
+          <div class="icon-card-header">
+            <div class="icon-symbol-box sym-amber">⭐</div>
+            <div class="icon-title-group">
+              <h4>Favoritos / Salvar</h4>
+              <span class="icon-category-tag">Ações & Favoritos</span>
+            </div>
+          </div>
+          <span class="icon-code-name">Icons.star / Icons.star_border</span>
+          <p>
+            Adiciona ou remove o destino atual da sua lista de Favoritos. Uma estrela preenchida em dourado indica que o ponto já está salvo no armazenamento do aparelho.
+          </p>
+          <div class="icon-screen-badge">📌 Card de Ações • Drawer Lateral</div>
+        </div>
+
+        <!-- 8. Ir / Rota Externa -->
+        <div class="icon-card" data-category="acao">
+          <div class="icon-card-header">
+            <div class="icon-symbol-box sym-green">↗️</div>
+            <div class="icon-title-group">
+              <h4>Ir / Iniciar Rota</h4>
+              <span class="icon-category-tag">Ações & Favoritos</span>
+            </div>
+          </div>
+          <span class="icon-code-name">Icons.navigation (Verde)</span>
+          <p>
+            Abre imediatamente o destino no aplicativo Google Maps no modo condução/caminhada para quem precisa de navegação curva a curva com instruções de tráfego.
+          </p>
+          <div class="icon-screen-badge">📌 Botão Verde de Navegação</div>
+        </div>
+
+        <!-- 9. Compartilhar -->
+        <div class="icon-card" data-category="acao">
+          <div class="icon-card-header">
+            <div class="icon-symbol-box sym-blue">📤</div>
+            <div class="icon-title-group">
+              <h4>Compartilhar</h4>
+              <span class="icon-category-tag">Ações & Favoritos</span>
+            </div>
+          </div>
+          <span class="icon-code-name">Icons.share</span>
+          <p>
+            Gera uma mensagem formatada com o nome do local, distância exata, coordenadas geográficas e link universal do Google Maps para enviar via WhatsApp ou redes sociais.
+          </p>
+          <div class="icon-screen-badge">📌 Botão de Compartilhamento</div>
+        </div>
+
+        <!-- 10. Histórico -->
+        <div class="icon-card" data-category="acao">
+          <div class="icon-card-header">
+            <div class="icon-symbol-box sym-cyan">🕒</div>
+            <div class="icon-title-group">
+              <h4>Histórico Recente</h4>
+              <span class="icon-category-tag">Ações & Favoritos</span>
+            </div>
+          </div>
+          <span class="icon-code-name">Icons.history</span>
+          <p>
+            Armazena as pesquisas recentes efetuadas. Permite reabrir e recalcular a rota para um local anterior com um simples toque, sem precisar redigitar.
+          </p>
+          <div class="icon-screen-badge">📌 Seção 'Últimas Pesquisas'</div>
+        </div>
+
+        <!-- 11. Lixeira / Excluir -->
+        <div class="icon-card" data-category="acao">
+          <div class="icon-card-header">
+            <div class="icon-symbol-box sym-red">🗑️</div>
+            <div class="icon-title-group">
+              <h4>Excluir / Limpar</h4>
+              <span class="icon-category-tag">Ações & Favoritos</span>
+            </div>
+          </div>
+          <span class="icon-code-name">Icons.delete / delete_outline</span>
+          <p>
+            Remove um item específico das pesquisas ou apaga todo o histórico de uma vez. Nos favoritos, também é acionado ao deslizar o card para o lado vermelho com opção 'Desfazer'.
+          </p>
+          <div class="icon-screen-badge">📌 Histórico e Favoritos</div>
+        </div>
+
+        <!-- 12. Renomear / Apelido -->
+        <div class="icon-card" data-category="acao">
+          <div class="icon-card-header">
+            <div class="icon-symbol-box sym-amber">✏️</div>
+            <div class="icon-title-group">
+              <h4>Renomear / Apelido</h4>
+              <span class="icon-category-tag">Ações & Favoritos</span>
+            </div>
+          </div>
+          <span class="icon-code-name">PopupMenu: rename</span>
+          <p>
+            Permite definir um nome personalizado e carinhoso para um favorito, como "Meu Hotel", "Carro Estacionado" ou "Ponto de Encontro", facilitando a identificação.
+          </p>
+          <div class="icon-screen-badge">📌 Menu dos Favoritos</div>
+        </div>
+
+        <!-- 13. Setas de Giro (AR) -->
+        <div class="icon-card" data-category="nav">
+          <div class="icon-card-header">
+            <div class="icon-symbol-box sym-red">⇄</div>
+            <div class="icon-title-group">
+              <h4>Setas Indicadoras de Giro</h4>
+              <span class="icon-category-tag">Navegação</span>
+            </div>
+          </div>
+          <span class="icon-code-name">Icons.chevron_left / chevron_right</span>
+          <p>
+            Aparecem na borda esquerda ou direita da tela da Câmera quando o destino está fora do campo de visão da lente (ângulo > 45°), orientando para qual lado você deve virar.
+          </p>
+          <div class="icon-screen-badge">📌 Tela de Câmera (Overlay AR)</div>
+        </div>
+
+        <!-- 14. Sobre o App -->
+        <div class="icon-card" data-category="tela">
+          <div class="icon-card-header">
+            <div class="icon-symbol-box sym-purple">ℹ️</div>
+            <div class="icon-title-group">
+              <h4>Sobre o Aplicativo</h4>
+              <span class="icon-category-tag">Telas do App</span>
+            </div>
+          </div>
+          <span class="icon-code-name">Icons.info_outline_rounded</span>
+          <p>
+            Abre a tela informativa com versão compilada, dados do desenvolvedor (Henrique Silveira / HNS Soluções), termos de software livre e licenças de bibliotecas abertas.
+          </p>
+          <div class="icon-screen-badge">📌 Menu Lateral (Drawer)</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção: Simulador Interativo Web -->
+  <section id="simulador" style="background: rgba(18, 26, 53, 0.35);">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Demonstração Interativa</span>
+        <h2 class="section-title">Experimente o <span class="gradient-accent">Simulador</span> do City Compass</h2>
+        <p class="section-subtitle">
+          Veja em tempo real como o algoritmo de bússola calcula o desvio entre a direção do seu celular e as coordenadas do destino selecionado.
+        </p>
+      </div>
+
+      <div class="simulator-container">
+        <div class="sim-grid">
+          <!-- Bússola Visual -->
+          <div class="sim-visual-col">
+            <div class="sim-compass-bezel">
+              <span class="sim-cardinal sim-n">N</span>
+              <span class="sim-cardinal sim-s">S</span>
+              <span class="sim-cardinal sim-e">L</span>
+              <span class="sim-cardinal sim-w">O</span>
+              <div class="sim-needle" id="sim-needle"></div>
+              <div class="sim-center-hub"></div>
+            </div>
+
+            <div class="sim-status-banner status-aligned" id="sim-status">
+              🧭 Alinhado com o destino
+            </div>
+          </div>
+
+          <!-- Controles do Simulador -->
+          <div class="sim-controls-col">
+            <h3>Controles de Simulação</h3>
+            <p>
+              Arraste os controles abaixo para simular o movimento do aparelho e mudar o ângulo do destino desejado:
+            </p>
+
+            <div class="control-group">
+              <div class="control-label">
+                <span>Orientação do Celular (Heading):</span>
+                <span class="val" id="val-heading">0° (Norte)</span>
+              </div>
+              <input type="range" id="input-heading" min="0" max="359" value="0">
+              <div class="quick-angles">
+                <button class="btn-chip" onclick="setHeading(0)">0° Norte</button>
+                <button class="btn-chip" onclick="setHeading(90)">90° Leste</button>
+                <button class="btn-chip" onclick="setHeading(180)">180° Sul</button>
+                <button class="btn-chip" onclick="setHeading(270)">270° Oeste</button>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <div class="control-label">
+                <span>Rumo do Destino (Bearing):</span>
+                <span class="val" id="val-bearing">0° (Norte)</span>
+              </div>
+              <input type="range" id="input-bearing" min="0" max="359" value="0">
+              <div class="quick-angles">
+                <button class="btn-chip" onclick="setBearing(0)">Alinhar ao Norte</button>
+                <button class="btn-chip" onclick="setBearing(45)">45° Nordeste</button>
+                <button class="btn-chip" onclick="setBearing(135)">135° Sudeste</button>
+                <button class="btn-chip" onclick="setBearing(315)">315° Noroeste</button>
+              </div>
+            </div>
+
+            <div style="background: rgba(255,255,255,0.05); padding: 14px; border-radius: 12px; font-size: 0.88rem; border: 1px solid var(--border-subtle);">
+              💡 <strong>Lógica do App:</strong> Quando o desvio angular absoluto é menor que 5°, o app indica <em>"Alinhado com o destino"</em>. Caso contrário, instrui exatamente quantos graus girar para a direita ou esquerda.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção: Política de Privacidade e Diretrizes do Google Play Console -->
+  <section id="privacidade">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Google Play Console • Conformidade Legal</span>
+        <h2 class="section-title">Política de <span class="gradient-accent">Privacidade</span> & Permissões</h2>
+        <p class="section-subtitle">
+          Transparência absoluta para usuários e equipe de revisão do Google Play Console sobre a coleta, finalidade e uso de permissões sensíveis do dispositivo.
+        </p>
+      </div>
+
+      <div class="privacy-box">
+        <div class="privacy-header">
+          <div class="privacy-header-icon">🛡️</div>
+          <div>
+            <h3>Política de Privacidade do City Compass</h3>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--text-dim);">Última atualização: Março de 2026 • Em conformidade com a LGPD e Google Play Developer Policy</p>
+          </div>
+        </div>
+
+        <div class="privacy-content">
+          <p>
+            O <strong>City Compass</strong>, desenvolvido por <strong>Henrique Silveira (HNS Soluções)</strong>, valoriza e respeita integralmente a privacidade de seus usuários. Esta política detalha de forma clara como tratamos dados e permissões no aplicativo com pacote registrado sob identificador <code>br.com.hnssolucoes.city_compass</code>.
+          </p>
+
+          <h3>1. Permissões Solicitadas e Justificativa de Uso</h3>
+          <p>
+            O aplicativo requer apenas as permissões estritamente indispensáveis para o fornecimento das funcionalidades de localização espacial e realidade aumentada:
+          </p>
+
+          <table class="permission-table">
+            <thead>
+              <tr>
+                <th>Permissão</th>
+                <th>Finalidade Específica</th>
+                <th>Armazenamento</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="badge-perm">ACCESS_FINE_LOCATION</span><br><span class="badge-perm">ACCESS_COARSE_LOCATION</span></td>
+                <td>Determinar a posição geográfica atual do usuário (latitude e longitude) para calcular a distância e o azimute em relação ao destino.</td>
+                <td><strong>Temporário em memória RAM.</strong> Não é enviado para nenhum servidor externo e não é compartilhado com terceiros.</td>
+              </tr>
+              <tr>
+                <td><span class="badge-perm">CAMERA</span></td>
+                <td>Exibir o feed de vídeo em tempo real na tela do usuário com sobreposição gráfica (AR overlay) contendo o nome e distância do local.</td>
+                <td><strong>Nenhum registro.</strong> Nenhuma foto, vídeo ou imagem da câmera é capturada, gravada ou transmitida.</td>
+              </tr>
+              <tr>
+                <td><span class="badge-perm">SENSORES DE ORIENTAÇÃO</span> (Magnetômetro / Acelerômetro)</td>
+                <td>Leitura do norte magnético e giro do dispositivo para orientar dinamicamente a agulha da bússola e o ponteiro do radar.</td>
+                <td><strong>Exclusivamente local.</strong> Dados de sensores processados no próprio processador do smartphone.</td>
+              </tr>
+              <tr>
+                <td><span class="badge-perm">INTERNET</span></td>
+                <td>Buscar informações geográficas de endereços e carregar os blocos de mapa abertos via OpenStreetMap, além de anúncios via Google AdMob.</td>
+                <td>Conexões HTTPS criptografadas diretamente para os provedores oficiais.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>2. Coleta e Armazenamento de Dados Pessoais</h3>
+          <p>
+            O City Compass <strong>NÃO exige cadastro, NÃO cria contas de usuário e NÃO coleta dados pessoais identificáveis</strong> (como nome completo, e-mail, telefone, documentos ou dados bancários).
+          </p>
+          <p>
+            Todas as suas pesquisas recentes e locais marcados como favoritos são salvos <strong>exclusivamente na memória interna do seu dispositivo</strong> via armazenamento local protegido (SharedPreferences). Se você desinstalar o aplicativo ou limpar os dados no gerenciador do Android, essas informações serão excluídas em definitivo.
+          </p>
+
+          <h3>3. Anúncios Publicitários (Google AdMob)</h3>
+          <p>
+            O aplicativo pode veicular anúncios fornecidos pelo <strong>Google AdMob</strong> para apoiar o desenvolvimento contínuo gratuito. O AdMob pode utilizar identificadores de publicidade anônimos do próprio sistema operacional Android para veicular anúncios em conformidade com as diretrizes do Google Play.
+          </p>
+
+          <h3>4. Direitos do Usuário & Contato do Desenvolvedor</h3>
+          <p>
+            O usuário possui controle integral sobre as permissões solicitadas, podendo revogá-las a qualquer momento nas Configurações de Aplicativos do sistema Android.
+          </p>
+          <p>
+            Para esclarecimento de dúvidas, solicitações ou suporte técnico exigido pelas diretrizes do Google Play Console, entre em contato diretamente com o responsável técnico:
+          </p>
+          <p style="background: rgba(255,255,255,0.05); padding: 14px 20px; border-radius: 12px; border-left: 4px solid var(--secondary);">
+            📧 <strong>E-mail de Suporte:</strong> suporte@hnssolucoes.com.br<br>
+            🏢 <strong>Empresa / Desenvolvedor:</strong> HNS Soluções • Henrique Silveira<br>
+            🌐 <strong>Pacote:</strong> br.com.hnssolucoes.city_compass
+          </p>
+        </div>
+      </div>
+
+      <!-- FAQ e Especificações Técnicas -->
+      <div id="faq">
+        <div class="section-header" style="margin-bottom: 30px;">
+          <span class="section-tag">Perguntas Frequentes</span>
+          <h3 style="font-size: 1.8rem;">Dúvidas Comuns & Dicas de Uso</h3>
+        </div>
+
+        <div class="faq-grid">
+          <div class="faq-card">
+            <h4>🧭 Como calibrar a bússola do celular?</h4>
+            <p>
+              Se a agulha parecer instável ou apontando errado, movimente o smartphone no ar desenhando uma figura de <strong>"8" (oito horizontal / símbolo do infinito)</strong> duas ou três vezes. Isso calibra o magnetômetro com o campo magnético da Terra.
+            </p>
+          </div>
+
+          <div class="faq-card">
+            <h4>📶 O aplicativo funciona sem internet?</h4>
+            <p>
+              O cálculo de bússola, radar e GPS para locais já salvos nos Favoritos funciona mesmo sem sinal de rede celular. A internet só é necessária para pesquisar novos nomes de locais desconhecidos e carregar imagens de mapa online.
+            </p>
+          </div>
+
+          <div class="faq-card">
+            <h4>📷 Por que a câmera pede permissão?</h4>
+            <p>
+              A permissão de câmera é necessária unicamente para renderizar a experiência de Realidade Aumentada (AR), onde o nome do destino aparece flutuando sobre o mundo físico. O app não salva fotos e não envia imagens para a internet.
+            </p>
+          </div>
+
+          <div class="faq-card">
+            <h4>💾 Como renomear ou apagar um favorito?</h4>
+            <p>
+              Na tela de Favoritos, toque nos três pontinhos ao lado do item e selecione "Renomear" para colocar um apelido. Para apagar, basta arrastar o item para a esquerda ou tocar no botão de lixeira.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ficha Técnica para Google Play Console -->
+      <div class="app-meta-box">
+        <div class="app-meta-item">
+          <h5>Identificador (App ID)</h5>
+          <p style="font-size: 0.95rem; font-family: monospace;">br.com.hnssolucoes.city_compass</p>
+        </div>
+        <div class="app-meta-item">
+          <h5>Versão Atual</h5>
+          <p>1.0.0 (Build 1)</p>
+        </div>
+        <div class="app-meta-item">
+          <h5>Compatibilidade</h5>
+          <p>Android 5.0+ (API 21)</p>
+        </div>
+        <div class="app-meta-item">
+          <h5>Desenvolvedor</h5>
+          <p>HNS Soluções</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Rodapé do Site -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <img src="assets/icons/icon.png" alt="City Compass" width="32" height="32" style="border-radius: 8px;">
+            <strong style="color: #FFF; font-size: 1.2rem; font-family: 'Outfit';">City Compass</strong>
+          </div>
+          <p>
+            Ferramenta inteligente de navegação espacial e descoberta sensorial de lugares ao seu redor. Desenvolvido em Flutter com foco em velocidade, elegância e privacidade.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Navegação Rápida</h4>
+          <ul class="footer-links">
+            <li><a href="#sobre">Sobre o Aplicativo</a></li>
+            <li><a href="#como-funciona">Como Funciona</a></li>
+            <li><a href="#icones">Guia de Ícones</a></li>
+            <li><a href="#simulador">Simulador Web</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Google Play & Legal</h4>
+          <ul class="footer-links">
+            <li><a href="#privacidade">Política de Privacidade</a></li>
+            <li><a href="#faq">Suporte e FAQ</a></li>
+            <li><a href="#privacidade">Termos de Permissões</a></li>
+            <li><a href="mailto:suporte@hnssolucoes.com.br">Contato por E-mail</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          © 2026 <strong>Henrique Silveira • HNS Soluções</strong>. Todos os direitos reservados.
+        </div>
+        <div style="color: var(--text-dim);">
+          Página oficial para submissão no Google Play Console.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Lógica JavaScript Interativa -->
+  <script>
+    // ==========================================
+    // 1. FILTRAGEM E BUSCA DE ÍCONES
+    // ==========================================
+    const filterButtons = document.querySelectorAll('.filter-tab-btn');
+    const iconCards = document.querySelectorAll('.icon-card');
+    const searchInput = document.getElementById('icon-search');
+
+    let currentCategory = 'all';
+    let currentSearchTerm = '';
+
+    function filterIcons() {
+      iconCards.forEach(card => {
+        const category = card.getAttribute('data-category');
+        const textContent = card.innerText.toLowerCase();
+
+        const matchesCategory = (currentCategory === 'all' || category === currentCategory);
+        const matchesSearch = textContent.includes(currentSearchTerm);
+
+        if (matchesCategory && matchesSearch) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentCategory = btn.getAttribute('data-filter');
+        filterIcons();
+      });
+    });
+
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        currentSearchTerm = e.target.value.toLowerCase().trim();
+        filterIcons();
+      });
+    }
+
+    // ==========================================
+    // 2. SIMULADOR INTERATIVO DE BÚSSOLA & RADAR
+    // ==========================================
+    const needleEl = document.getElementById('sim-needle');
+    const statusEl = document.getElementById('sim-status');
+    const inputHeading = document.getElementById('input-heading');
+    const inputBearing = document.getElementById('input-bearing');
+    const valHeading = document.getElementById('val-heading');
+    const valBearing = document.getElementById('val-bearing');
+
+    function updateSimulation() {
+      const heading = parseFloat(inputHeading.value);
+      const bearing = parseFloat(inputBearing.value);
+
+      valHeading.textContent = `${Math.round(heading)}°`;
+      valBearing.textContent = `${Math.round(bearing)}°`;
+
+      // Cálculo do desvio angular conforme implementado no Flutter
+      // difference = ((destinationBearing - heading + 540) % 360) - 180;
+      const difference = ((bearing - heading + 540) % 360) - 180;
+
+      // Rotaciona a agulha no visor
+      needleEl.style.transform = `rotate(${difference}deg)`;
+
+      // Atualiza o banner de status
+      const absDiff = Math.abs(difference);
+
+      if (absDiff < 5) {
+        statusEl.className = 'sim-status-banner status-aligned';
+        statusEl.innerHTML = '🧭 <strong>Alinhado com o destino!</strong>';
+      } else if (difference > 0) {
+        statusEl.className = 'sim-status-banner status-turn';
+        statusEl.innerHTML = `↻ Vire <strong>${Math.round(difference)}°</strong> para a direita`;
+      } else {
+        statusEl.className = 'sim-status-banner status-turn';
+        statusEl.innerHTML = `↺ Vire <strong>${Math.round(absDiff)}°</strong> para a esquerda`;
+      }
+    }
+
+    if (inputHeading && inputBearing) {
+      inputHeading.addEventListener('input', updateSimulation);
+      inputBearing.addEventListener('input', updateSimulation);
+    }
+
+    function setHeading(deg) {
+      inputHeading.value = deg;
+      updateSimulation();
+    }
+
+    function setBearing(deg) {
+      inputBearing.value = deg;
+      updateSimulation();
+    }
+
+    // Inicializa simulação
+    updateSimulation();
+
+    // ==========================================
+    // 3. MENU MOBILE & NAVEGAÇÃO SUAVE
+    // ==========================================
+    const mobileBtn = document.getElementById('mobile-menu-trigger');
+    const navLinks = document.querySelector('.nav-links');
+
+    if (mobileBtn && navLinks) {
+      mobileBtn.addEventListener('click', () => {
+        if (navLinks.style.display === 'flex') {
+          navLinks.style.display = 'none';
+        } else {
+          navLinks.style.display = 'flex';
+          navLinks.style.flexDirection = 'column';
+          navLinks.style.position = 'absolute';
+          navLinks.style.top = '76px';
+          navLinks.style.left = '0';
+          navLinks.style.width = '100%';
+          navLinks.style.background = 'rgba(9, 11, 26, 0.98)';
+          navLinks.style.padding = '24px';
+          navLinks.style.boxShadow = '0 10px 30px rgba(0,0,0,0.5)';
+        }
+      });
+
+      // Fechar menu mobile ao clicar em um link
+      document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+          if (window.innerWidth <= 768) {
+            navLinks.style.display = 'none';
+          }
+        });
+      });
+    }
+  </script>
+</body>
 </html>
